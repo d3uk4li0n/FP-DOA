@@ -1,6 +1,54 @@
-build
-out
-.cache
-.idea
-.vs
-.vscode
+# Ignore build output
+build/
+bin/
+lib/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore compiled files
+*.exe
+*.out
+*.so
+*.dll
+
+# Ignore generated files
+*.user
+*.suo
+*.sdf
+*.db
+*.db-shm
+*.db-wal
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Ignore logs and databases
+*.log
+*.sqlite
+*.sqlite3
+
+# Ignore temporary files
+*.swp
+*~
+
+# Ignore CMake build directory
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CMakeTmp/
+
+# Ignore SFML-specific files
+*.user
+*.suo
+*.sdf
+
+
+# Ignore _deps folder?
+_deps
