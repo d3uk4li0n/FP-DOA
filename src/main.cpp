@@ -6,7 +6,8 @@
 #include <vector>
 #include <unordered_map>
 
-struct Troop {
+struct Troop
+{
     std::string name;
     int attack;
     int life;
@@ -14,7 +15,8 @@ struct Troop {
     int quantity;
 };
 
-struct ResourceBonus {
+struct ResourceBonus
+{
     int wood = 0;
     int stone = 0;
     int metal = 0;
@@ -22,73 +24,145 @@ struct ResourceBonus {
     int gold = 0;
 };
 
-struct TargetData {
+struct TargetData
+{
     int defendersPower;
     ResourceBonus resourceBonus;
 };
 
-std::unordered_map<std::string, std::vector<TargetData>> targetDatabase; // Simulated database
-std::vector<Troop> playerTroops; // Vector to hold player's troops input
+std::unordered_map<std::string, std::vector<TargetData>> targetDatabase;
+std::vector<Troop> playerTroops = {
+    {"Porter", 1, 45, 1, 0},
+    {"Conscript", 10, 75, 1, 0},
+    {"Spy", 5, 10, 2, 0},
+    {"Halberdsman", 40, 150, 2, 0},
+    {"Minotaur", 70, 225, 3, 0},
+    {"Longbowman", 85, 75, 4, 0},
+    {"Swift Strike Dragon", 150, 300, 5, 0},
+    {"Battle Dragon", 300, 1500, 7, 0},
+    {"Armored Transport", 5, 750, 6, 0},
+    {"Giant", 1000, 4000, 9, 0},
+    {"Fire Mirror", 1220, 1500, 10, 0}
+};
 
-void initializeTargetDatabase() {
-    // Initialize with example data
-    targetDatabase["AnthropusCamp"] = {{1000, {0, 0, 0, 112500, 2500}}};
-    targetDatabase["WildernessForest"] = {{500, {10, 0, 0, 0, 0}}};
+std::string selectedTarget = "AnthropusCamp";
+int selectedLevel = 1;
+std::vector<std::string> targets = {"AnthropusCamp", "WildernessForest", "WildernessMountain", "WildernessHill", "WildernessLake"};
+std::string battleOutcomeMessage = ""; // To display the outcome
+
+void initializeTargetDatabase()
+{
+    targetDatabase["AnthropusCamp"] = {
+        {1000, {0, 0, 0, 112500, 2500}},   // Level 1
+        {2000, {0, 0, 0, 225000, 5000}},   // Level 2
+        {3000, {0, 0, 0, 337500, 7500}},   // Level 3
+        {4000, {0, 0, 0, 450000, 10000}},  // Level 4
+        {5000, {0, 0, 0, 562500, 12500}},  // Level 5
+        {6000, {0, 0, 0, 675000, 15000}},  // Level 6
+        {7000, {0, 0, 0, 787500, 17500}},  // Level 7
+        {8000, {0, 0, 0, 900000, 20000}},  // Level 8
+        {9000, {0, 0, 0, 1012500, 22500}}, // Level 9
+        {10000, {0, 0, 0, 1125000, 25000}} // Level 10
+    };
+
+    targetDatabase["WildernessForest"] = {
+        {500, {10, 0, 0, 0, 0}}, {1000, {20, 0, 0, 0, 0}}, {1500, {30, 0, 0, 0, 0}}, {2000, {40, 0, 0, 0, 0}}, {2500, {50, 0, 0, 0, 0}}, {3000, {60, 0, 0, 0, 0}}, {3500, {70, 0, 0, 0, 0}}, {4000, {80, 0, 0, 0, 0}}, {4500, {90, 0, 0, 0, 0}}, {5000, {100, 0, 0, 0, 0}}};
+
+    targetDatabase["WildernessMountain"] = {
+        {500, {0, 10, 0, 0, 0}}, {1000, {0, 20, 0, 0, 0}}, {1500, {0, 30, 0, 0, 0}}, {2000, {0, 40, 0, 0, 0}}, {2500, {0, 50, 0, 0, 0}}, {3000, {0, 60, 0, 0, 0}}, {3500, {0, 70, 0, 0, 0}}, {4000, {0, 80, 0, 0, 0}}, {4500, {0, 90, 0, 0, 0}}, {5000, {0, 100, 0, 0, 0}}};
+
+    targetDatabase["WildernessHill"] = {
+        {500, {0, 0, 10, 0, 0}}, {1000, {0, 0, 20, 0, 0}}, {1500, {0, 0, 30, 0, 0}}, {2000, {0, 0, 40, 0, 0}}, {2500, {0, 0, 50, 0, 0}}, {3000, {0, 0, 60, 0, 0}}, {3500, {0, 0, 70, 0, 0}}, {4000, {0, 0, 80, 0, 0}}, {4500, {0, 0, 90, 0, 0}}, {5000, {0, 0, 100, 0, 0}}};
+
+    targetDatabase["WildernessLake"] = {
+        {500, {0, 0, 0, 10, 0}}, {1000, {0, 0, 0, 20, 0}}, {1500, {0, 0, 0, 30, 0}}, {2000, {0, 0, 0, 40, 0}}, {2500, {0, 0, 0, 50, 0}}, {3000, {0, 0, 0, 60, 0}}, {3500, {0, 0, 0, 70, 0}}, {4000, {0, 0, 0, 80, 0}}, {4500, {0, 0, 0, 90, 0}}, {5000, {0, 0, 0, 100, 0}}};
 }
 
-int calculateTotalCombatStrength(const std::vector<Troop>& troops) {
+TargetData getTargetData(const std::string &targetType, int level)
+{
+    return targetDatabase[targetType][level - 1];
+}
+
+int calculateTotalCombatStrength(const std::vector<Troop> &troops)
+{
     int totalCombatStrength = 0;
-    for (const auto& troop : troops) {
+    for (const auto &troop : troops)
+    {
         totalCombatStrength += troop.attack * troop.life * troop.power * troop.quantity;
     }
     return totalCombatStrength;
 }
 
-TargetData getTargetData(const std::string& targetType, int level) {
-    if (targetDatabase.find(targetType) != targetDatabase.end() && level <= targetDatabase[targetType].size()) {
-        return targetDatabase[targetType][level - 1];
-    }
-    return {};
-}
+void displayTroopInputForm()
+{
+    ImGui::Begin("Troop Deployment Form");
 
-std::pair<std::string, ResourceBonus> calculateBattleOutcome(const std::vector<Troop>& playerTroops, const std::string& targetType, int level) {
-    int playerCombatStrength = calculateTotalCombatStrength(playerTroops);
-    TargetData target = getTargetData(targetType, level);
+    for (auto &troop : playerTroops)
+    {
+        ImGui::InputInt(troop.name.c_str(), &troop.quantity);
+    }
 
-    if (playerCombatStrength > target.defendersPower) {
-        return {"Player Wins", target.resourceBonus};
-    } else {
-        return {"Player Loses", {}};
+    if (ImGui::BeginCombo("Target", selectedTarget.c_str()))
+    {
+        for (const auto &target : targets)
+        {
+            bool isSelected = (selectedTarget == target);
+            if (ImGui::Selectable(target.c_str(), isSelected))
+            {
+                selectedTarget = target;
+            }
+            if (isSelected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
     }
-}
 
-// ImGui form to let the user input troop types and quantities
-void displayTroopInputForm() {
-    ImGui::Begin("Troop Input Form");
-    for (int i = 0; i < playerTroops.size(); ++i) {
-        ImGui::InputInt(("Quantity " + std::to_string(i+1)).c_str(), &playerTroops[i].quantity);
+    ImGui::InputInt("Level", &selectedLevel);
+    selectedLevel = std::max(1, std::min(selectedLevel, 10));
+
+    if (ImGui::Button("Deploy"))
+    {
+        int playerCombatStrength = calculateTotalCombatStrength(playerTroops);
+        TargetData target = getTargetData(selectedTarget, selectedLevel);
+        bool victory = playerCombatStrength > target.defendersPower;
+        battleOutcomeMessage = victory ? "Victory! " : "Defeat! ";
+        battleOutcomeMessage += "Your power: " + std::to_string(playerCombatStrength) + " vs Enemy power: " + std::to_string(target.defendersPower) + ". ";
+
+        if (victory)
+        {
+            battleOutcomeMessage += "Resources earned: Wood " + std::to_string(target.resourceBonus.wood) +
+                                    ", Stone " + std::to_string(target.resourceBonus.stone) +
+                                    ", Metal " + std::to_string(target.resourceBonus.metal) +
+                                    ", Food " + std::to_string(target.resourceBonus.food) +
+                                    ", Gold " + std::to_string(target.resourceBonus.gold) + ".";
+        }
     }
-    if (ImGui::Button("Add Troop")) {
-        playerTroops.push_back({"", 0, 0, 0, 0}); // Adding a placeholder for a new troop
+
+    if (!battleOutcomeMessage.empty())
+    {
+        ImGui::Text("%s", battleOutcomeMessage.c_str());
     }
+
     ImGui::End();
 }
 
-int main() {
+int main()
+{
     sf::RenderWindow window(sf::VideoMode(800, 600), "Battle Simulator");
     ImGui::SFML::Init(window);
 
     initializeTargetDatabase();
-    
-    // Pre-fill some troops for demonstration
-    playerTroops.push_back({"Conscript", 10, 75, 1, 100});
-    playerTroops.push_back({"Longbowman", 85, 75, 4, 50});
 
     sf::Clock deltaClock;
-    while (window.isOpen()) {
+    while (window.isOpen())
+    {
         sf::Event event;
-        while (window.pollEvent(event)) {
+        while (window.pollEvent(event))
+        {
             ImGui::SFML::ProcessEvent(event);
+
             if (event.type == sf::Event::Closed)
                 window.close();
         }
