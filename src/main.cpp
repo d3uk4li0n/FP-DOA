@@ -3,7 +3,7 @@
 #include <imgui-SFML.h>
 #include "PlayerResources.h"
 #include "GameUI.h"
-#include "TargetData.h" // Included to use initializeTargetDatabase()
+#include "TargetData.h"
 
 std::string selectedTarget = "AnthropusCamp";
 int selectedLevel = 1;
@@ -16,9 +16,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "Battle Simulator");
     ImGui::SFML::Init(window);
 
-    initializeTargetDatabase(); // Correctly identified as being defined in TargetDatabase.cpp
-
+    initializeTargetDatabase();
     sf::Clock deltaClock;
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -32,6 +32,8 @@ int main()
         }
         sf::Time dt = deltaClock.restart();
         ImGui::SFML::Update(window, dt);
+
+        playerResources.update(dt.asSeconds());
 
         displayTroopInputForm(playerTroops, selectedTarget, selectedLevel, targets, battleOutcomeMessage, playerResources);
 
