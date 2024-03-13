@@ -18,7 +18,12 @@ add_library(ImGui STATIC ${IMGUI_SOURCES})
 target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
 target_link_libraries(ImGui PUBLIC sfml-graphics sfml-window sfml-system)
 
-add_executable(CMakeSFMLProject src/main.cpp)
+add_executable(CMakeSFMLProject
+src/main.cpp  
+src/TargetDatabase.cpp
+src/Troop.cpp
+src/GameUI.cpp
+src/PlayerResources.cpp)
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system ImGui)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 
