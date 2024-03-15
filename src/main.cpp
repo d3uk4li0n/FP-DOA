@@ -1,22 +1,14 @@
-// Third-party libraries
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
 #include <imgui-SFML.h>
-// Project header files
-#include "PlayerResources.h"
-#include "GameUI.h"
+#include "GameSession.h"
 #include "TargetData.h"
-
-std::string selectedTarget = "AnthropusCamp";
-int selectedLevel = 1;
-std::vector<std::string> targets = {"AnthropusCamp", "WildernessForest", "WildernessMountain", "WildernessHill", "WildernessLake"};
-std::string battleOutcomeMessage = "";
-PlayerResources playerResources;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Battle Simulator");
     ImGui::SFML::Init(window);
 
+    GameSession gameSession;
     initializeTargetDatabase();
     sf::Clock deltaClock;
 
@@ -32,9 +24,8 @@ int main() {
         sf::Time dt = deltaClock.restart();
         ImGui::SFML::Update(window, dt);
 
-        playerResources.update(dt.asSeconds());
-
-        displayTroopInputForm(playerTroops, selectedTarget, selectedLevel, targets, battleOutcomeMessage, playerResources);
+        gameSession.update(dt.asSeconds());
+        gameSession.displayUI();
 
         window.clear();
         ImGui::SFML::Render(window);
