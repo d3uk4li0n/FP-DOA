@@ -1,6 +1,8 @@
+// Third-party libraries
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
 #include <imgui-SFML.h>
+// Project header files
 #include "PlayerResources.h"
 #include "GameUI.h"
 #include "TargetData.h"
@@ -11,25 +13,22 @@ std::vector<std::string> targets = {"AnthropusCamp", "WildernessForest", "Wilder
 std::string battleOutcomeMessage = "";
 PlayerResources playerResources;
 
-int main()
-{
+int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Battle Simulator");
     ImGui::SFML::Init(window);
 
     initializeTargetDatabase();
     sf::Clock deltaClock;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
-            if (event.type == sf::Event::Closed)
-            {
+            if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
+
         sf::Time dt = deltaClock.restart();
         ImGui::SFML::Update(window, dt);
 
