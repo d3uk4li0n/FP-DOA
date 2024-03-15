@@ -1,4 +1,3 @@
-// TargetDatabase.cpp
 #include "TargetData.h"
 
 std::unordered_map<std::string, std::vector<TargetData>> targetDatabase;

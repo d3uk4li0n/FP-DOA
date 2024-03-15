@@ -1,4 +1,3 @@
-// Troop.cpp
 #include "Troop.h"
 
 std::vector<Troop> playerTroops = {
