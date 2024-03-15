@@ -1,6 +1,7 @@
+#include <imgui.h>
+
 #include "GameUI.h"
 #include "TargetData.h"
-#include <imgui.h>
 
 void displayTroopInputForm(std::vector<Troop> &playerTroops, std::string &selectedTarget, int &selectedLevel, std::vector<std::string> &targets, std::string &battleOutcomeMessage, PlayerResources &playerResources)
 {
