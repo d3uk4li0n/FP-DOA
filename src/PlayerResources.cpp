@@ -1,5 +1,9 @@
-// PlayerResources.cpp
 #include "PlayerResources.h"
+
+PlayerResources::PlayerResources() 
+    : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f)
+{
+}
 
 void PlayerResources::increaseResources(int amount)
 {
@@ -24,8 +28,8 @@ void PlayerResources::displayResources()
 void PlayerResources::update(float deltaTime)
 {
     updateTimer += deltaTime;
-    if (updateTimer >= 5.0f)
-    { // Every 5 seconds
+    if (updateTimer >= 5.0f) // Every 5 seconds
+    {
         increaseResources(5);
         updateTimer -= 5.0f;
     }
