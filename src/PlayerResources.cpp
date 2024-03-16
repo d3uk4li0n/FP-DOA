@@ -1,17 +1,14 @@
+// PlayerResources.cpp
 #include "PlayerResources.h"
 
-PlayerResources::PlayerResources() 
-    : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f)
-{
+void PlayerResources::addBuilding(Building* building) {
+    buildings.push_back(building);
 }
 
-void PlayerResources::increaseResources(int amount)
-{
-    wood += amount;
-    stone += amount;
-    metal += amount;
-    food += amount;
-    gold += amount;
+void PlayerResources::increaseResources() {
+    for (auto* building : buildings) {
+        food += building->produce(); // Simplified logic; adjust based on your game's mechanics
+    }
 }
 
 void PlayerResources::displayResources()
@@ -25,12 +22,23 @@ void PlayerResources::displayResources()
     ImGui::End();
 }
 
-void PlayerResources::update(float deltaTime)
-{
+void PlayerResources::update(float deltaTime) {
     updateTimer += deltaTime;
-    if (updateTimer >= 5.0f) // Every 5 seconds
-    {
-        increaseResources(5);
-        updateTimer -= 5.0f;
+    if (updateTimer >= 1.0f) { // Checking every second
+        increaseResources();
+        updateTimer -= 1.0f;
+    }
+}
+
+void PlayerResources::removeBuilding(size_t index) {
+    if (index < buildings.size()) {
+        delete buildings[index]; // Free the dynamically allocated memory
+        buildings.erase(buildings.begin() + index); // Remove the pointer from the vector
+    }
+}
+
+PlayerResources::~PlayerResources() {
+    for (auto* building : buildings) {
+        delete building; // Clean up dynamic allocations
     }
 }

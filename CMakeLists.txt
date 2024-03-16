@@ -25,6 +25,7 @@ src/Troop.cpp
 src/GameUI.cpp
 src/GameSession.cpp
 src/EventHandling.cpp
+src/Building.cpp
 src/Rendering.cpp
 src/PlayerResources.cpp)
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system ImGui)
