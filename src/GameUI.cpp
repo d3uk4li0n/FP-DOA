@@ -54,7 +54,7 @@ void displayBuildingManagementGUI(PlayerResources& playerResources, std::vector<
         ImGui::EndCombo();
     }
 
-    ImGui::Combo("Building Type", &selectedBuildingType, "Farm\0Mine\0Lumber Mill\0");
+    ImGui::Combo("Building Type", &selectedBuildingType, "Farm\0Mine\0Lumber Mill\0Quarry\0");
     ImGui::InputInt("Level", &buildingLevel, 1, 1);
     buildingLevel = std::max(1, buildingLevel); // Ensure level is at least 1
 
@@ -65,6 +65,7 @@ void displayBuildingManagementGUI(PlayerResources& playerResources, std::vector<
             case 0: building = new Farmland(buildingLevel, selectedPosition); break;
             case 1: building = new Mine(buildingLevel, selectedPosition); break;
             case 2: building = new LumberMill(buildingLevel, selectedPosition); break;
+            case 3: building = new Quarry(buildingLevel, selectedPosition); break;
         }
         if (building) {
             playerResources.addBuilding(building);

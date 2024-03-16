@@ -13,6 +13,6 @@ void GameSession::update(float dt) {
 
 void GameSession::displayUI() {
     displayTroopInputForm(playerTroops, selectedTarget, selectedLevel, targets, battleOutcomeMessage, playerResources);
-    std::vector<std::string> positions = {"Position 1", "Position 2", "Position 3"}; // Example positions, adjust based on actual game logic
+    std::vector<std::string> positions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9", "Position 10"}; // Example positions, adjust based on actual game logic
     displayBuildingManagementGUI(playerResources, positions);
 }

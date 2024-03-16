@@ -7,7 +7,18 @@ void PlayerResources::addBuilding(Building* building) {
 
 void PlayerResources::increaseResources() {
     for (auto* building : buildings) {
-        food += building->produce(); // Simplified logic; adjust based on your game's mechanics
+        if (auto* farm = dynamic_cast<Farmland*>(building)) {
+            food += farm->produce();
+        }
+        else if (auto* mine = dynamic_cast<Mine*>(building)) {
+            metal += mine->produce();
+        }
+        else if (auto* quarry = dynamic_cast<Quarry*>(building)) {
+            stone += quarry->produce();
+        }
+        else if (auto* lumberMill = dynamic_cast<LumberMill*>(building)) {
+            wood += lumberMill->produce();
+        }
     }
 }
 
