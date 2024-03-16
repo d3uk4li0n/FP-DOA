@@ -1,48 +1,35 @@
 #include <SFML/Graphics.hpp>
+#include <imgui.h>
+#include <imgui-SFML.h>
+
+#include "GameSession.h"
+#include "TargetData.h"
+#include "EventHandling.h"
+#include "Rendering.h"
+
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+const std::string WINDOW_TITLE = "Battle Simulator";
 
 int main() {
-    // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Dragons of atlantis");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE);
+    ImGui::SFML::Init(window);
 
-    // Player setup
-    sf::RectangleShape player(sf::Vector2f(50.0f, 50.0f));
-    player.setPosition(375.0f, 500.0f);
-    player.setFillColor(sf::Color::Green);
+    GameSession gameSession;
+    initializeTargetDatabase();  // Ensure this function is defined and correctly initializes game data.
+    sf::Clock deltaClock;
 
-    // Start the game loop
     while (window.isOpen()) {
-        // Process events
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            // Close window: exit
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
+        handleEvents(window, gameSession);
 
-        // Move player with arrow keys
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && player.getPosition().x > 0) {
-            player.move(-0.5f, 0.0f);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && player.getPosition().x < 750) {
-            player.move(0.5f, 0.0f);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && player.getPosition().y < 550) {
-            player.move(0.0f,0.5f);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && player.getPosition().y > 0) {
-            player.move(0.0f,-0.5f);
-        }
+        sf::Time dt = deltaClock.restart();
+        ImGui::SFML::Update(window, dt);
 
-        // Clear screen
-        window.clear();
+        gameSession.update(dt.asSeconds());
 
-        // Draw the player and the ball
-        window.draw(player);
-
-        // Update the window
-        window.display();
+        render(window, gameSession);
     }
 
+    ImGui::SFML::Shutdown();
     return 0;
 }

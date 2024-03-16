@@ -10,8 +10,24 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(CMakeSFMLProject src/main.cpp)
-target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system)
+# Add ImGui library
+file(GLOB IMGUI_SOURCES
+    ${CMAKE_SOURCE_DIR}/imgui/*.cpp
+)
+add_library(ImGui STATIC ${IMGUI_SOURCES})
+target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
+target_link_libraries(ImGui PUBLIC sfml-graphics sfml-window sfml-system)
+
+add_executable(CMakeSFMLProject
+src/main.cpp  
+src/TargetDatabase.cpp
+src/Troop.cpp
+src/GameUI.cpp
+src/GameSession.cpp
+src/EventHandling.cpp
+src/Rendering.cpp
+src/PlayerResources.cpp)
+target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system ImGui)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 
 if(WIN32)
