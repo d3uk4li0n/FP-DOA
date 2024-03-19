@@ -15,17 +15,23 @@ public:
     int getLevel() const { return level; }
     std::string getPosition() const { return position; }
 
-protected:
+private:
     int level;
     std::string position;
 };
+
+// Example of using constants for building types
+static const std::string FARM_TYPE = "Farmland";
+static const std::string MINE_TYPE = "Mine";
+static const std::string QUARRY_TYPE = "Quarry";
+static const std::string LUMBER_MILL_TYPE = "Lumber Mill";
 
 class Farmland : public Building
 {
 public:
     Farmland(int level, const std::string &position) : Building(level, position) {}
     int produce() const override;
-    std::string getType() const override { return "Farmland"; }
+    std::string getType() const override { return FARM_TYPE; }
 };
 
 class Mine : public Building
@@ -33,7 +39,7 @@ class Mine : public Building
 public:
     Mine(int level, const std::string &position) : Building(level, position) {}
     int produce() const override;
-    std::string getType() const override { return "Mine"; }
+    std::string getType() const override { return MINE_TYPE; }
 };
 
 class Quarry : public Building
@@ -41,7 +47,7 @@ class Quarry : public Building
 public:
     Quarry(int level, const std::string &position) : Building(level, position) {}
     int produce() const override;
-    std::string getType() const override { return "Quarry"; }
+    std::string getType() const override { return QUARRY_TYPE; }
 };
 
 class LumberMill : public Building
@@ -49,7 +55,7 @@ class LumberMill : public Building
 public:
     LumberMill(int level, const std::string &position) : Building(level, position) {}
     int produce() const override;
-    std::string getType() const override { return "Lumber Mill"; }
+    std::string getType() const override { return LUMBER_MILL_TYPE; }
 };
 
 #endif // BUILDING_H
