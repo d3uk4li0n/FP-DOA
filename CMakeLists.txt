@@ -19,15 +19,20 @@ target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
 target_link_libraries(ImGui PUBLIC sfml-graphics sfml-window sfml-system)
 
 add_executable(CMakeSFMLProject
-src/main.cpp  
-src/TargetDatabase.cpp
-src/Troop.cpp
-src/GameUI.cpp
-src/GameSession.cpp
-src/EventHandling.cpp
-src/Building.cpp
-src/Rendering.cpp
-src/PlayerResources.cpp)
+    src/main.cpp
+    src/TargetDatabase.cpp
+    src/Troop.cpp
+    src/GameUI.cpp
+    src/GameSession.cpp
+    src/EventHandling.cpp
+    src/Building.cpp
+    src/Farmland.cpp
+    src/Mine.cpp
+    src/Quarry.cpp
+    src/LumberMill.cpp
+    src/Rendering.cpp
+    src/PlayerResources.cpp)
+
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system ImGui)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
 

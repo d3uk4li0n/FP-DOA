@@ -1,25 +1,9 @@
 #include "Building.h"
 
-int Farmland::produce() const
-{
-    // Produces food
-    return 20 * getLevel();
-}
+Building::Building(int level, const std::string& position) : level(level), position(position) {}
 
-int Mine::produce() const
-{
-    // Produces metal
-    return 10 * getLevel();
-}
+Building::~Building() = default;
 
-int Quarry::produce() const
-{
-    // Produces stone
-    return 15 * getLevel();
-}
+int Building::getLevel() const { return level; }
 
-int LumberMill::produce() const
-{
-    // Produces wood
-    return 12 * getLevel();
-}
+std::string Building::getPosition() const { return position; }

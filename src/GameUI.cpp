@@ -7,6 +7,10 @@
 
 #include "GameUI.h"
 #include "Building.h"
+#include "Farmland.h"
+#include "Mine.h"
+#include "Quarry.h"
+#include "LumberMill.h"
 #include <algorithm> // For std::remove
 
 // displayTroopInputForm function remains unchanged.
