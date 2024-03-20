@@ -1,34 +1,33 @@
-// PlayerResources.cpp
 #include "PlayerResources.h"
 #include "Farmland.h"
 #include "Mine.h"
 #include "Quarry.h"
 #include "LumberMill.h"
 
-void PlayerResources::addBuilding(Building *building)
+void PlayerResources::addBuilding(std::unique_ptr<Building> building)
 {
-    buildings.push_back(building);
+    buildings.push_back(std::move(building)); // Use std::move to transfer ownership
 }
 
 void PlayerResources::increaseResources()
 {
-    for (auto *building : buildings)
+    for (const auto &building : buildings)
     {
-        if (auto *farm = dynamic_cast<Farmland *>(building))
+        if (auto farmland = dynamic_cast<Farmland *>(building.get()))
         {
-            food += farm->produce();
+            food += farmland->produce(); // Farmland produces food
         }
-        else if (auto *mine = dynamic_cast<Mine *>(building))
+        else if (auto mine = dynamic_cast<Mine *>(building.get()))
         {
-            metal += mine->produce();
+            metal += mine->produce(); // Mine produces metal
         }
-        else if (auto *quarry = dynamic_cast<Quarry *>(building))
+        else if (auto quarry = dynamic_cast<Quarry *>(building.get()))
         {
-            stone += quarry->produce();
+            stone += quarry->produce(); // Quarry produces stone
         }
-        else if (auto *lumberMill = dynamic_cast<LumberMill *>(building))
+        else if (auto lumberMill = dynamic_cast<LumberMill *>(building.get()))
         {
-            wood += lumberMill->produce();
+            wood += lumberMill->produce(); // LumberMill produces wood
         }
     }
 }
@@ -48,7 +47,7 @@ void PlayerResources::update(float deltaTime)
 {
     updateTimer += deltaTime;
     if (updateTimer >= 1.0f)
-    { // Checking every second
+    {
         increaseResources();
         updateTimer -= 1.0f;
     }
@@ -58,15 +57,7 @@ void PlayerResources::removeBuilding(size_t index)
 {
     if (index < buildings.size())
     {
-        delete buildings[index];                    // Free the dynamically allocated memory
-        buildings.erase(buildings.begin() + index); // Remove the pointer from the vector
-    }
-}
-
-PlayerResources::~PlayerResources()
-{
-    for (auto *building : buildings)
-    {
-        delete building; // Clean up dynamic allocations
+        // No need to manually delete; unique_ptr will clean up automatically
+        buildings.erase(buildings.begin() + index);
     }
 }
