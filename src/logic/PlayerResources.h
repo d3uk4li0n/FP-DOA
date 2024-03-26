@@ -7,7 +7,8 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-class PlayerResources {
+class PlayerResources
+{
 public:
     PlayerResources() : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f) {}
 

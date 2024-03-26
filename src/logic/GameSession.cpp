@@ -12,7 +12,8 @@ void GameSession::update(float dt) {
 }
 
 void GameSession::displayUI() {
-    displayTroopInputForm(playerTroops, selectedTarget, selectedLevel, targets, battleOutcomeMessage, playerResources);
-    std::vector<std::string> positions = {"Position 1", "Position 2", "Position 3", "Position 4", "Position 5", "Position 6", "Position 7", "Position 8", "Position 9", "Position 10"}; // Example positions, adjust based on actual game logic
-    displayBuildingManagementGUI(playerResources, positions);
+    // The positions array is now moved to the building management GUI component,
+    // or wherever it's most relevant.
+    // This function call encapsulates all UI logic into the GameUI module.
+    displayMainGameUI(playerTroops, playerResources, targets, selectedTarget, selectedLevel, battleOutcomeMessage);
 }

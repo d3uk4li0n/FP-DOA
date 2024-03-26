@@ -23,6 +23,8 @@ add_executable(CMakeSFMLProject
     src/helpers/TargetDatabase.cpp
     src/troops/Troop.cpp
     src/ui/GameUI.cpp
+    src/ui/BuildingManagementGUI.cpp
+    src/ui/TroopInputForm.cpp
     src/logic/GameSession.cpp
     src/logic/EventHandling.cpp
     src/buildings/Building.cpp
