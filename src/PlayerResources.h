@@ -1,23 +1,28 @@
 #ifndef PLAYER_RESOURCES_H
 #define PLAYER_RESOURCES_H
 
+#include <vector>
+#include <memory> // Include for std::unique_ptr
+#include "Building.h"
 #include <imgui.h>
 #include <imgui-SFML.h>
 
 class PlayerResources {
 public:
-    PlayerResources(); // Default constructor declaration
+    PlayerResources() : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f) {}
 
-    int wood;
-    int stone;
-    int metal;
-    int food;
-    int gold;
-    float updateTimer; // Timer to track resource update
+    int wood, stone, metal, food, gold;
+    float updateTimer;
+    std::vector<std::unique_ptr<Building>> buildings; // Change to store unique_ptr
 
-    void increaseResources(int amount);
+    void addBuilding(std::unique_ptr<Building> building);
+    void increaseResources();
     void displayResources();
-    void update(float deltaTime); // deltaTime in seconds
+    void update(float deltaTime);
+    void removeBuilding(size_t index);
+
+private:
+    // Destructor is not needed because std::unique_ptr automatically handles memory cleanup
 };
 
-#endif
+#endif // PLAYER_RESOURCES_H

@@ -1,17 +1,35 @@
 #include "PlayerResources.h"
+#include "Farmland.h"
+#include "Mine.h"
+#include "Quarry.h"
+#include "LumberMill.h"
 
-PlayerResources::PlayerResources() 
-    : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f)
+void PlayerResources::addBuilding(std::unique_ptr<Building> building)
 {
+    buildings.push_back(std::move(building)); // Use std::move to transfer ownership
 }
 
-void PlayerResources::increaseResources(int amount)
+void PlayerResources::increaseResources()
 {
-    wood += amount;
-    stone += amount;
-    metal += amount;
-    food += amount;
-    gold += amount;
+    for (const auto &building : buildings)
+    {
+        if (auto farmland = dynamic_cast<Farmland *>(building.get()))
+        {
+            food += farmland->produce(); // Farmland produces food
+        }
+        else if (auto mine = dynamic_cast<Mine *>(building.get()))
+        {
+            metal += mine->produce(); // Mine produces metal
+        }
+        else if (auto quarry = dynamic_cast<Quarry *>(building.get()))
+        {
+            stone += quarry->produce(); // Quarry produces stone
+        }
+        else if (auto lumberMill = dynamic_cast<LumberMill *>(building.get()))
+        {
+            wood += lumberMill->produce(); // LumberMill produces wood
+        }
+    }
 }
 
 void PlayerResources::displayResources()
@@ -28,9 +46,18 @@ void PlayerResources::displayResources()
 void PlayerResources::update(float deltaTime)
 {
     updateTimer += deltaTime;
-    if (updateTimer >= 5.0f) // Every 5 seconds
+    if (updateTimer >= 1.0f)
     {
-        increaseResources(5);
-        updateTimer -= 5.0f;
+        increaseResources();
+        updateTimer -= 1.0f;
+    }
+}
+
+void PlayerResources::removeBuilding(size_t index)
+{
+    if (index < buildings.size())
+    {
+        // No need to manually delete; unique_ptr will clean up automatically
+        buildings.erase(buildings.begin() + index);
     }
 }
