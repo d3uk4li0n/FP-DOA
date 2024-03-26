@@ -1,36 +1,14 @@
 #include <imgui.h>
 
 #include "GameUI.h"
-#include "TargetData.h"
-#include "PlayerResources.h"
-#include "Building.h"
-
-#include "GameUI.h"
-#include "Building.h"
-#include "Farmland.h"
-#include "Mine.h"
-#include "Quarry.h"
-#include "LumberMill.h"
+#include "../helpers/TargetData.h"
+#include "../logic/PlayerResources.h"
+#include "../buildings/Building.h"
+#include "../buildings/Farmland.h"
+#include "../buildings/Mine.h"
+#include "../buildings/Quarry.h"
+#include "../buildings/LumberMill.h"
 #include <algorithm> // For std::remove
-
-// displayTroopInputForm function remains unchanged.
-
-#include <imgui.h>
-
-#include "GameUI.h"
-#include "TargetData.h"
-#include "PlayerResources.h"
-#include "Building.h"
-
-#include "GameUI.h"
-#include "Building.h"
-#include "Farmland.h"
-#include "Mine.h"
-#include "Quarry.h"
-#include "LumberMill.h"
-#include <algorithm> // For std::remove
-
-// displayTroopInputForm function remains unchanged.
 
 void displayBuildingManagementGUI(PlayerResources &playerResources, std::vector<std::string> &allPositions)
 {

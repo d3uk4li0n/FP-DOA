@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include "Troop.h"
+#include "../troops/Troop.h"
 
 struct ResourceBonus {
     int wood = 0;

@@ -1,8 +1,8 @@
-#include "PlayerResources.h"
-#include "Farmland.h"
-#include "Mine.h"
-#include "Quarry.h"
-#include "LumberMill.h"
+#include "../logic/PlayerResources.h"
+#include "../buildings/Farmland.h"
+#include "../buildings/Mine.h"
+#include "../buildings/Quarry.h"
+#include "../buildings/LumberMill.h"
 
 void PlayerResources::addBuilding(std::unique_ptr<Building> building)
 {

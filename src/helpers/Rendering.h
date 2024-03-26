@@ -3,8 +3,8 @@
 #define RENDERING_H
 
 #include <SFML/Graphics.hpp>
-#include "GameSession.h"
+#include "../logic/GameSession.h"
 
-void render(sf::RenderWindow& window, GameSession& gameSession);
+void render(sf::RenderWindow &window, GameSession &gameSession);
 
 #endif // RENDERING_H

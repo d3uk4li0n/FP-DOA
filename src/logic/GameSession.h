@@ -2,11 +2,12 @@
 #define GAME_SESSION_H
 
 #include "PlayerResources.h"
-#include "Troop.h"
+#include "../troops/Troop.h"
 #include <string>
 #include <vector>
 
-class GameSession {
+class GameSession
+{
 public:
     GameSession();
 

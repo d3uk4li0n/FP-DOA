@@ -1,6 +1,6 @@
 // GameSession.cpp
 #include "GameSession.h"
-#include "GameUI.h"
+#include "../ui/GameUI.h"
 #include <string>
 #include <vector>
 

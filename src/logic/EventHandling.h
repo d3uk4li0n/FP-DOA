@@ -3,7 +3,7 @@
 #define EVENT_HANDLING_H
 
 #include <SFML/Graphics.hpp>
-#include "GameSession.h"
+#include "../logic/GameSession.h"
 
 void handleEvents(sf::RenderWindow& window, GameSession& gameSession);
 
