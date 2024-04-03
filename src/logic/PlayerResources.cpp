@@ -3,8 +3,9 @@
 #include "../buildings/Mine.h"
 #include "../buildings/Quarry.h"
 #include "../buildings/LumberMill.h"
+#include "../buildings/Building.h"
 
-PlayerResources::PlayerResources() : wood(0), stone(0), metal(0), food(0), gold(0), updateTimer(0.0f) {}
+PlayerResources::PlayerResources() : wood(0), stone(0), metal(0), food(0), gold(0) {}
 
 // Getters
 int PlayerResources::getWood() const { return wood; }
@@ -25,26 +26,19 @@ void PlayerResources::addBuilding(std::unique_ptr<Building> building)
     buildings.push_back(std::move(building));
 }
 
-void PlayerResources::increaseResources()
+void PlayerResources::removeBuilding(size_t index)
 {
-    for (const auto &building : buildings)
+    if (index < buildings.size())
     {
-        if (auto farmland = dynamic_cast<Farmland *>(building.get()))
-        {
-            food += farmland->produce();
-        }
-        else if (auto mine = dynamic_cast<Mine *>(building.get()))
-        {
-            metal += mine->produce();
-        }
-        else if (auto quarry = dynamic_cast<Quarry *>(building.get()))
-        {
-            stone += quarry->produce();
-        }
-        else if (auto lumberMill = dynamic_cast<LumberMill *>(building.get()))
-        {
-            wood += lumberMill->produce();
-        }
+        buildings.erase(buildings.begin() + index);
+    }
+}
+
+void PlayerResources::updateResources()
+{
+    for (auto &building : buildings)
+    {
+        building->produce(*this); // Calls the produce method of each building
     }
 }
 
@@ -59,16 +53,6 @@ void PlayerResources::displayResources()
     ImGui::End();
 }
 
-void PlayerResources::update(float deltaTime)
-{
-    updateTimer += deltaTime;
-    if (updateTimer >= 1.0f)
-    {
-        increaseResources();
-        updateTimer -= 1.0f;
-    }
-}
-
 size_t PlayerResources::getBuildingCount() const
 {
     return buildings.size();
@@ -80,13 +64,5 @@ Building *PlayerResources::getBuilding(size_t index)
     {
         return buildings[index].get();
     }
-    return nullptr; // Or throw an exception as per your error handling policy
-}
-
-void PlayerResources::removeBuilding(size_t index)
-{
-    if (index < buildings.size())
-    {
-        buildings.erase(buildings.begin() + index);
-    }
+    return nullptr; // Or appropriate error handling
 }

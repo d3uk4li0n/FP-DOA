@@ -17,7 +17,7 @@ public:
     std::string battleOutcomeMessage;
     PlayerResources playerResources;
 
-    void update(float dt);
+    void update();
     void displayUI();
 };
 

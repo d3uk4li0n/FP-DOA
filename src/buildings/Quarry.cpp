@@ -1,10 +1,11 @@
-
+// Quarry.cpp
 #include "Quarry.h"
+#include "../logic/PlayerResources.h"
 
 Quarry::Quarry(int level, const std::string& position) : Building(level, position) {}
 
-int Quarry::produce() const {
-    return 20 * getLevel();
+void Quarry::produce(PlayerResources& resources) const {
+    resources.setStone(resources.getStone() + 20 * getLevel()); // Directly update resources
 }
 
 std::string Quarry::getType() const {

@@ -2,19 +2,22 @@
 #define BUILDING_H
 
 #include <string>
+class PlayerResources;
 
-class Building {
+class Building
+{
 public:
-    Building(int level, const std::string& position);
+    Building(int level, const std::string &position);
     virtual ~Building();
 
-    virtual int produce() const = 0;
+    // Updated produce method signature
+    virtual void produce(PlayerResources &resources) const = 0;
     virtual std::string getType() const = 0;
 
     int getLevel() const;
     std::string getPosition() const;
 
-private:
+protected:
     int level;
     std::string position;
 };

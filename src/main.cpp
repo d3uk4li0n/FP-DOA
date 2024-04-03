@@ -27,7 +27,7 @@ int main()
         sf::Time dt = deltaClock.restart();
         ImGui::SFML::Update(window, dt);
 
-        gameSession.update(dt.asSeconds());
+        gameSession.update();
 
         render(window, gameSession);
     }

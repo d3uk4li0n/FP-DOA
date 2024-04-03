@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <memory>
-#include "../buildings/Building.h"
 #include <imgui.h>
 #include <imgui-SFML.h>
+#include "../buildings/Building.h"
 
 class PlayerResources
 {
@@ -26,18 +26,15 @@ public:
     void setFood(int value);
     void setGold(int value);
 
-    // Methods for building management
+    void addBuilding(std::unique_ptr<Building> building);
+    void removeBuilding(size_t index);
+    void updateResources(); // This is the new method for updating resources
+    void displayResources();
     size_t getBuildingCount() const;
     Building *getBuilding(size_t index);
-    void addBuilding(std::unique_ptr<Building> building); // Ensure this is declared only once
-    void removeBuilding(size_t index);                    // Ensure this is declared only once
-    void increaseResources();                             // Ensure this is declared
-    void displayResources();                              // Ensure this is declared
-    void update(float deltaTime);
 
 private:
     int wood, stone, metal, food, gold;
-    float updateTimer;
     std::vector<std::unique_ptr<Building>> buildings;
 };
 
