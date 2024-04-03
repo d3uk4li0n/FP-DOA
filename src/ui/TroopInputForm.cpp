@@ -46,6 +46,7 @@ void displayTroopInputForm(std::vector<Troop> &playerTroops, std::string &select
         battleOutcomeMessage = victory ? "Victory! " : "Defeat! ";
         battleOutcomeMessage += "Your power: " + std::to_string(playerCombatStrength) + " vs Enemy power: " + std::to_string(target.defendersPower) + ". ";
 
+        // Inside the "Deploy" button click handling block
         if (victory)
         {
             battleOutcomeMessage += "Resources earned: Wood " + std::to_string(target.resourceBonus.wood) +
@@ -53,11 +54,11 @@ void displayTroopInputForm(std::vector<Troop> &playerTroops, std::string &select
                                     ", Metal " + std::to_string(target.resourceBonus.metal) +
                                     ", Food " + std::to_string(target.resourceBonus.food) +
                                     ", Gold " + std::to_string(target.resourceBonus.gold) + ".";
-            playerResources.wood += target.resourceBonus.wood;
-            playerResources.stone += target.resourceBonus.stone;
-            playerResources.metal += target.resourceBonus.metal;
-            playerResources.food += target.resourceBonus.food;
-            playerResources.gold += target.resourceBonus.gold;
+            playerResources.setWood(playerResources.getWood() + target.resourceBonus.wood);
+            playerResources.setStone(playerResources.getStone() + target.resourceBonus.stone);
+            playerResources.setMetal(playerResources.getMetal() + target.resourceBonus.metal);
+            playerResources.setFood(playerResources.getFood() + target.resourceBonus.food);
+            playerResources.setGold(playerResources.getGold() + target.resourceBonus.gold);
         }
     }
 

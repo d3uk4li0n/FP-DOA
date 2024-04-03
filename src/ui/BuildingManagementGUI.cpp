@@ -10,51 +10,48 @@
 #include "../buildings/LumberMill.h"
 #include <algorithm> // For std::remove
 
-void displayBuildingManagementGUI(PlayerResources &playerResources, std::vector<std::string> &allPositions)
-{
+void displayBuildingManagementGUI(PlayerResources &playerResources, std::vector<std::string> &allPositions) {
     ImGui::Begin("Building Management");
 
     std::vector<std::string> availablePositions = allPositions; // Copy all possible positions
 
     // Display current buildings with an option to remove them
-    for (int i = 0; i < playerResources.buildings.size(); ++i)
-    {
-        const auto &building = playerResources.buildings[i];
-        ImGui::Text("%s Level %d at %s", building->getType().c_str(), building->getLevel(), building->getPosition().c_str());
+    for (int i = 0; i < playerResources.getBuildingCount(); ++i) {
+        const auto building = playerResources.getBuilding(i);
+        if(building) { // Make sure building is not nullptr
+            ImGui::Text("%s Level %d at %s", building->getType().c_str(), building->getLevel(), building->getPosition().c_str());
 
-        std::string removeButtonLabel = "Remove##" + std::to_string(i);
-        if (ImGui::Button(removeButtonLabel.c_str()))
-        {
-            // Add the position back to available positions
-            availablePositions.push_back(building->getPosition());
-            // Remove the building
-            playerResources.removeBuilding(i);
-            --i; // Adjust index since we removed an item
+            std::string removeButtonLabel = "Remove##" + std::to_string(i);
+            if (ImGui::Button(removeButtonLabel.c_str())) {
+                // Add the position back to available positions
+                availablePositions.push_back(building->getPosition());
+                // Remove the building
+                playerResources.removeBuilding(i);
+                --i; // Adjust index since we removed an item
+            }
         }
     }
 
     // Remove the occupied positions from availablePositions for the dropdown
-    for (const auto &building : playerResources.buildings)
-    {
-        availablePositions.erase(std::remove(availablePositions.begin(), availablePositions.end(), building->getPosition()), availablePositions.end());
+    for (int i = 0; i < playerResources.getBuildingCount(); ++i) {
+        const auto building = playerResources.getBuilding(i);
+        if(building) { // Ensure building is not nullptr
+            availablePositions.erase(std::remove(availablePositions.begin(), availablePositions.end(), building->getPosition()), availablePositions.end());
+        }
     }
 
-    static int selectedBuildingType = 0; // 0-Farm, 1-Mine, 2-Lumber Mill
+    static int selectedBuildingType = 0; // 0-Farm, 1-Mine, 2-Lumber Mill, 3-Quarry
     static int buildingLevel = 1;        // Default level is 1
     static std::string selectedPosition = availablePositions.empty() ? "No Building slots available" : availablePositions[0];
 
     // Dropdown for selecting the position
-    if (ImGui::BeginCombo("Position", selectedPosition.c_str()))
-    {
-        for (const auto &position : availablePositions)
-        {
+    if (ImGui::BeginCombo("Position", selectedPosition.c_str())) {
+        for (const auto &position : availablePositions) {
             bool isSelected = (selectedPosition == position);
-            if (ImGui::Selectable(position.c_str(), isSelected))
-            {
+            if (ImGui::Selectable(position.c_str(), isSelected)) {
                 selectedPosition = position;
             }
-            if (isSelected)
-            {
+            if (isSelected) {
                 ImGui::SetItemDefaultFocus();
             }
         }
@@ -66,11 +63,9 @@ void displayBuildingManagementGUI(PlayerResources &playerResources, std::vector<
     buildingLevel = std::max(1, buildingLevel); // Ensure level is at least 1
 
     // Button to add a new building
-    if (ImGui::Button("Add Building") && !selectedPosition.empty() && std::find(availablePositions.begin(), availablePositions.end(), selectedPosition) != availablePositions.end())
-    {
+    if (ImGui::Button("Add Building") && !selectedPosition.empty() && std::find(availablePositions.begin(), availablePositions.end(), selectedPosition) != availablePositions.end()) {
         std::unique_ptr<Building> building;
-        switch (selectedBuildingType)
-        {
+        switch (selectedBuildingType) {
         case 0:
             building = std::make_unique<Farmland>(buildingLevel, selectedPosition);
             break;
@@ -86,9 +81,8 @@ void displayBuildingManagementGUI(PlayerResources &playerResources, std::vector<
         default:
             break;
         }
-        if (building)
-        {
-            playerResources.addBuilding(std::move(building)); // Move the unique_ptr
+        if (building) {
+            playerResources.addBuilding(std::move(building));
 
             // Immediately remove the position from available positions to prevent duplicates
             availablePositions.erase(std::remove(availablePositions.begin(), availablePositions.end(), selectedPosition), availablePositions.end());
