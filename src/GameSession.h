@@ -5,10 +5,12 @@
 #include "Troop.h"
 #include <string>
 #include <vector>
+#include "FortunaChance.h"
 
 class GameSession {
 public:
     GameSession();
+    ~GameSession();
 
     std::string selectedTarget;
     int selectedLevel;
@@ -17,7 +19,12 @@ public:
     PlayerResources playerResources;
 
     void update(float dt);
-    void displayUI();
+    void displayUI(sf::RenderWindow& window);
+
+    //handle click event
+    void doLeftClick(sf::Vector2f& mouse);
+private:
+    FortunaChance* fortunaChance;
 };
 
 #endif // GAME_SESSION_H
