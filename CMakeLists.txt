@@ -18,6 +18,12 @@ add_library(ImGui STATIC ${IMGUI_SOURCES})
 target_include_directories(ImGui PUBLIC ${CMAKE_SOURCE_DIR}/imgui)
 target_link_libraries(ImGui PUBLIC sfml-graphics sfml-window sfml-system)
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/images
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/font
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 add_executable(CMakeSFMLProject
     src/main.cpp
     src/TargetDatabase.cpp
@@ -31,7 +37,8 @@ add_executable(CMakeSFMLProject
     src/Quarry.cpp
     src/LumberMill.cpp
     src/Rendering.cpp
-    src/PlayerResources.cpp)
+    src/PlayerResources.cpp
+    src/FortunaChance.cpp)
 
 target_link_libraries(CMakeSFMLProject PRIVATE sfml-graphics sfml-audio sfml-window sfml-system ImGui)
 target_compile_features(CMakeSFMLProject PRIVATE cxx_std_17)
